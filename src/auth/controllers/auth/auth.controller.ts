@@ -5,7 +5,6 @@ import { AuthResponse } from 'src/auth/interfaces/auth-response.interface';
 import { AuthRepoService } from 'src/auth/services/auth-repo/auth-repo.service';
 import { JwtService } from 'src/auth/services/jwt/jwt.service';
 import { PasswordService } from 'src/auth/services/password/password.service';
-import { HttpResponse } from 'src/common/interface/http-response.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +15,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  public async register(@Body() payload: CreateUserRequest): HttpResponse<AuthResponse> {
+  public async register(@Body() payload: CreateUserRequest): Promise<AuthResponse> {
     const email = payload.email.toLowerCase();
     const password = await this.passwordService.hashPassword(payload.password);
 
@@ -28,17 +27,17 @@ export class AuthController {
 
     const jwt = this.jwtService.createJwt(user);
 
-    return { data: { jwt } };
+    return { jwt };
   }
 
   @Post('login')
-  public async login(@Body() payload: LoginRequest): HttpResponse<AuthResponse> {
+  public async login(@Body() payload: LoginRequest): Promise<AuthResponse> {
     const user = await this.authRepoService.findUserByEmail(payload.email);
 
     this.passwordService.checkPasswordsMatch(payload.password, user.password);
 
     const jwt = this.jwtService.createJwt(user);
 
-    return { data: { jwt } };
+    return { jwt };
   }
 }

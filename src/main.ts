@@ -9,7 +9,7 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
-    origin: ['http://localhost:4200']
+    origin: ['http://localhost:4500']
   });
   
   const port = ConfigService.getPort();
