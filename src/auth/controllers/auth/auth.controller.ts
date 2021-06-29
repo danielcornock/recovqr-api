@@ -27,7 +27,7 @@ export class AuthController {
 
     const jwt = this.jwtService.createJwt(user);
 
-    return { jwt };
+    return { jwt, name: user.name, email: user.email };
   }
 
   @Post('login')
@@ -38,6 +38,6 @@ export class AuthController {
 
     const jwt = this.jwtService.createJwt(user);
 
-    return { jwt };
+    return { jwt, name: user.name, email: user.email };
   }
 }

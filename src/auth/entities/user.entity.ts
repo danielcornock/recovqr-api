@@ -7,7 +7,7 @@ export class UserEntity extends Document {
   @Prop({ type: String, required: true })
   public name: string;
 
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true, unique: true, index: true })
   public email: string;
 
   @Prop({ type: String, required: true, select: false })
