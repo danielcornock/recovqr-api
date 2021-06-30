@@ -1,9 +1,16 @@
 import { Logger, Module } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CustomValidationPipe } from './pipes/custom-validation/custom-validation.pipe';
 import { ConfigService } from './services/config/config.service';
 
 @Module({
-  providers: [ConfigService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: CustomValidationPipe
+    }
+  ],
   imports: [
     MongooseModule.forRootAsync({
       useFactory: () => {
@@ -17,7 +24,6 @@ import { ConfigService } from './services/config/config.service';
         };
       }
     })
-  ],
-  exports: [ConfigService]
+  ]
 })
 export class CoreModule {}

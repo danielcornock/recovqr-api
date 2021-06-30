@@ -22,6 +22,10 @@
     "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/explicit-module-boundary-types": "error",
     "@typescript-eslint/no-explicit-any": "error",
+    "lines-between-class-members": "off",
+    "@typescript-eslint/lines-between-class-members": ["error", "always", {
+      "exceptAfterSingleLine": true
+    }],
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
       {
@@ -35,7 +39,7 @@
         }
       }
     ],
-    "@typescript-eslint/member-ordering": ["error", {
+    "@typescript-eslint/member-ordering": ["warn", {
       "default": [
         "signature",
 
