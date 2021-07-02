@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
-import { ErrorMessages } from 'src/common/constants/error-messages.constant';
+import { AuthErrorMessages } from 'src/auth/constants/auth-error-messages.constant';
 
 @Injectable()
 export class PasswordService {
@@ -12,7 +12,7 @@ export class PasswordService {
     const isMatch = await compare(testPassword, controlPassword);
 
     if (!isMatch) {
-      throw new NotFoundException(ErrorMessages.InvalidAuthenticationDetails);
+      throw new NotFoundException(AuthErrorMessages.InvalidAuthenticationDetails);
     }
   }
 }
