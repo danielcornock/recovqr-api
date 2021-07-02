@@ -34,10 +34,10 @@ export class AuthController {
   public async login(@Body() payload: LoginRequest): Promise<AuthResponse> {
     const user = await this.authRepoService.findUserForLogin(payload.email);
 
-    this.passwordService.checkPasswordsMatch(payload.password, user.password);
-
+    await this.passwordService.checkPasswordsMatch(payload.password, user.password);
+  
     const jwt = this.jwtService.createJwt(user);
-
+  
     return { jwt, name: user.name, email: user.email };
   }
 }
