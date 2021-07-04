@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, LeanDocument } from 'mongoose';
-import { Util } from 'src/common/services/util.service';
+import { Util } from 'src/core/services/util/util.service';
 
 @Schema()
 export class UserEntity extends Document {
