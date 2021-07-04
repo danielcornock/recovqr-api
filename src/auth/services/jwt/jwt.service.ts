@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { User } from 'src/auth/entities/user.entity';
 import { DecodedJwt } from 'src/auth/interfaces/decoded-jwt.interface';
@@ -19,19 +19,10 @@ export class JwtService {
     });
   }
 
-  public decodeJwt(rawToken: string): Promise<DecodedJwt> {
-    const token = this.extractTokenFromBearer(rawToken);
+  public decodeJwt(token: string): Promise<DecodedJwt> {
     const secret = ConfigService.getJwtSecret();
 
     return this.verify(token, secret);
-  }
-
-  private extractTokenFromBearer(token: string): string {
-    if (!token?.startsWith('Bearer')) {
-      throw new UnauthorizedException('Invalid authentication token');
-    }
-
-    return token.split(' ')[1];
   }
 
   private verify(token: string, secret: string): Promise<DecodedJwt> {

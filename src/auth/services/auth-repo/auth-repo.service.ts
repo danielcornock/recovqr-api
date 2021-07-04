@@ -32,4 +32,10 @@ export class AuthRepoService {
 
     return user.toObject();
   }
+
+  public async findUserForRequest(id: string): Promise<Omit<User, 'password'>> {
+    const user = await this.userRepo.findById(id);
+
+    return user.toObject();
+  }
 }
