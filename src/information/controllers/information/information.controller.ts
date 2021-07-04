@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
-import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
 import { InformationPayload } from 'src/information/dto/information-payload.dto';
 import { Information } from 'src/information/entities/information.entity';
 import { InformationRepoService } from 'src/information/services/information-repo/information-repo.service';
 
-@UseGuards(AuthGuard)
 @Controller('information')
+@AuthRequired()
 export class InformationController {
   constructor(
     private infoRepo: InformationRepoService
