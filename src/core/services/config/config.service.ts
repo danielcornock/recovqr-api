@@ -18,4 +18,8 @@ export class ConfigService {
   public static getJwtSecret(): string {
     return process.env.JWT_SECRET;
   }
+
+  public static getIpLookupSecret(): string {
+    return process.env.IP_LOOKUP_SECRET;
+  }
 }
