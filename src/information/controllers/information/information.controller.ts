@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
 import { InformationPayload } from 'src/information/dto/information-payload.dto';
@@ -8,7 +8,6 @@ import { InformationRepoService } from 'src/information/services/information-rep
 import { QrCodeService } from 'src/information/services/qr-code/qr-code.service';
 
 @Controller('information')
-@AuthRequired()
 export class InformationController {
   constructor(
     private infoRepo: InformationRepoService,
@@ -16,6 +15,7 @@ export class InformationController {
   ) {}
     
   @Post()
+  @AuthRequired()
   public async createInformationEntry(
     @Body() body: InformationPayload, @UserId() userId: string
   ): Promise<Information> {
@@ -23,14 +23,21 @@ export class InformationController {
   }
 
   @Get()
+  @AuthRequired()
   public async getInformationByUser(@UserId() userId: string): Promise<Information> {
     return this.infoRepo.fetchInformationByUserId(userId);
   }
 
   @Get('qr-code')
+  @AuthRequired()
   public async getOwnQrCode(@Headers('origin') origin: string, @UserId() userId: string): Promise<QrCodeResponse> {
     const qrCode = await this.qrCodeService.generateUserQrCode({ origin, userId });
 
     return { qrCode };
+  }
+
+  @Get(':userId')
+  public async getPublicInformation(@Param('userId') userId: string): Promise<Information> {
+    return this.infoRepo.fetchInformationByUserId(userId);
   }
 }
