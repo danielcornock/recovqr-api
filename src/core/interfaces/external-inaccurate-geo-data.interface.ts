@@ -1,4 +1,4 @@
-export interface IpLookupResponse {
+export interface ExternalInaccurateGeoData {
   ip: string;
   type: string;
   continent_code: string;

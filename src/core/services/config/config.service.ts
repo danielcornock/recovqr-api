@@ -22,4 +22,8 @@ export class ConfigService {
   public static getIpLookupSecret(): string {
     return process.env.IP_LOOKUP_SECRET;
   }
+
+  public static getGeolocationLookupSecret(): string {
+    return process.env.MAPQUEST_SECRET;
+  }
 }
