@@ -1,12 +1,12 @@
-export interface ExternalAccurateGeoData {
+export interface ExternalAccurateGeoDataResponse {
   results: GeocodedCoordinateExternalApiResult[];
 }
 
 interface GeocodedCoordinateExternalApiResult {
-  locations: Array<GeocodedCoordinateData>;
+  locations: Array<ExternalAccurateGeoData>;
 }
 
-export interface GeocodedCoordinateData {
+export interface ExternalAccurateGeoData {
   street: string;
   adminArea6: string;
   adminArea6Type: string;

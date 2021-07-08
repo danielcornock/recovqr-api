@@ -1,7 +1,8 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TagController } from './controllers/tag/tag.controller';
 import { TagEntity, TagSchema } from './entities/tag.entity';
-import { IpLookupService } from './services/ip-lookup/ip-lookup.service';
+import { LocationLookupService } from './services/location-lookup/location-lookup.service';
 import { TagRepoService } from './services/tag-repo/tag-repo.service';
 
 @Module({
@@ -11,7 +12,7 @@ import { TagRepoService } from './services/tag-repo/tag-repo.service';
       { name: TagEntity.name, schema: TagSchema }
     ])
   ],
-  providers: [TagRepoService, IpLookupService],
-  controllers: []
+  providers: [TagRepoService, LocationLookupService],
+  controllers: [TagController]
 })
 export class TagsModule {}

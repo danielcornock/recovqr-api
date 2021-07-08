@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Tag, TagEntity } from 'src/tags/entities/tag.entity';
+import { NormalisedLocationData } from 'src/tags/interfaces/normalised-location-data.interface';
 
 @Injectable()
 export class TagRepoService {
@@ -13,8 +14,8 @@ export class TagRepoService {
     return tag.map((tag) => tag.toObject());
   }
 
-  public async generateTag(userId: string): Promise<Tag> {
-    const tag = await this.tagRepo.create({ userId });
+  public async generateTag(data: NormalisedLocationData & { userId: string }): Promise<Tag> {
+    const tag = await this.tagRepo.create(data);
 
     return tag.toObject();
   }

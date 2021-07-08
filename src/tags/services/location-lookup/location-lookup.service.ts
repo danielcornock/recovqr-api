@@ -1,6 +1,6 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { Coordinates } from 'src/core/interfaces/coordinates.interface';
-import { ExternalAccurateGeoData, GeocodedCoordinateData } from 'src/core/interfaces/external-accurate-geo-data.interface';
+import { ExternalAccurateGeoData, ExternalAccurateGeoDataResponse } from 'src/core/interfaces/external-accurate-geo-data.interface';
 import { ExternalInaccurateGeoData } from 'src/core/interfaces/external-inaccurate-geo-data.interface';
 import { ConfigService } from 'src/core/services/config/config.service';
 import { ExternalEndpoints } from 'src/shared/constants/external-endpoints.constant';
@@ -15,14 +15,13 @@ export class LocationLookupService {
     ip: string,
     coordinates: CreateTagPayload
   ): Promise<NormalisedLocationData> {
-    const accurateAddressInfo: GeocodedCoordinateData | null = await this.getLocationDetailsFromCoordinates(coordinates);
-    const inaccurateAddressInfo: ExternalInaccurateGeoData = await this.getIpLocationData(ip);
-
+    const accurateAddressInfo: ExternalAccurateGeoData | null = await this.getLocationDetailsFromCoordinates(coordinates);
     if (accurateAddressInfo) {
-      const fields: Array<keyof GeocodedCoordinateData> = ['street', 'adminArea6', 'adminArea5', 'adminArea4', 'adminArea3', 'adminArea1', 'postalCode'];
+      const fields: Array<keyof ExternalAccurateGeoData> = ['street', 'adminArea6', 'adminArea5', 'adminArea4', 'adminArea3', 'adminArea1', 'postalCode'];
 
       return {
-        accurate: true,
+        shortAddress: `${accurateAddressInfo.adminArea5}, ${accurateAddressInfo.adminArea1}`,
+        locationIsAccurate: true,
         address: fields.map((fieldName) => accurateAddressInfo[fieldName] as string).filter(Boolean),
         coordinates: {
           longitude: accurateAddressInfo.latLng.lng.toString(),
@@ -31,10 +30,12 @@ export class LocationLookupService {
       };
     }
 
+    const inaccurateAddressInfo: ExternalInaccurateGeoData = await this.getIpLocationData(ip);
     const fields: Array<keyof ExternalInaccurateGeoData> = ['city', 'country_name', 'zip'];
 
     return {
-      accurate: false,
+      shortAddress: `${inaccurateAddressInfo.city}, ${inaccurateAddressInfo.country_code}`,
+      locationIsAccurate: false,
       address: fields.map((fieldName) => inaccurateAddressInfo[fieldName] as string).filter(Boolean),
       coordinates: {
         longitude: inaccurateAddressInfo.longitude,
@@ -54,7 +55,7 @@ export class LocationLookupService {
 
   private async getLocationDetailsFromCoordinates(
     coordinates: CreateTagPayload
-  ): Promise<GeocodedCoordinateData | null> {
+  ): Promise<ExternalAccurateGeoData | null> {
     if (!coordinates.latitude || !coordinates.latitude) {
       return null;
     }
@@ -62,7 +63,7 @@ export class LocationLookupService {
     const accessKey = ConfigService.getGeolocationLookupSecret();
     const url = ExternalEndpoints.MapQuestReverseGeocode(accessKey, coordinates as Coordinates);
 
-    const response = await this.httpService.get<ExternalAccurateGeoData>(url).toPromise();
+    const response = await this.httpService.get<ExternalAccurateGeoDataResponse>(url).toPromise();
 
     return response.data?.results?.[0]?.locations?.[0] ?? null;
   }
