@@ -20,13 +20,15 @@ export class TagController {
       @Req() request: Request,
       @Body() body: CreateTagPayload
   ): Promise<Tag> {
+    const ipAddress = request.socket.remoteAddress;
     const locationInformation = await this.locationLookupService.getLocationData(
-      request.socket.remoteAddress,
+      ipAddress,
       body
     );
 
     return this.tagRepo.generateTag({
       userId,
+      ipAddress,
       ...locationInformation
     });
   }

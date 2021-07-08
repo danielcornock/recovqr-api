@@ -14,7 +14,7 @@ export class TagRepoService {
     return tag.map((tag) => tag.toObject());
   }
 
-  public async generateTag(data: NormalisedLocationData & { userId: string }): Promise<Tag> {
+  public async generateTag(data: NormalisedLocationData & { userId: string, ipAddress: string }): Promise<Tag> {
     const tag = await this.tagRepo.create(data);
 
     return tag.toObject();
