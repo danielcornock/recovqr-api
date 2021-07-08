@@ -97,7 +97,7 @@
       "allowTemplateLiterals": true
     }],
     "max-len": ["error", {
-      "code": 120,
+      "code": 140,
       "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
       "ignoreComments": true,
       "ignoreUrls": true,
