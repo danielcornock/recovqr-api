@@ -16,7 +16,9 @@ export class InformationRepoService {
     let created: InformationEntity;
 
     if (existingInformation) {
-      created = await this.infoRepo.findByIdAndUpdate(existingInformation._id, data, { new: true });
+      created = await this.infoRepo.findOneAndUpdate(
+        { _id: existingInformation._id, userId }, data, { new: true }
+      );
     } else {
       created = await this.infoRepo.create({
         userId,

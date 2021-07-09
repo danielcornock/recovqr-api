@@ -9,7 +9,7 @@ export class TagRepoService {
   constructor(@InjectModel(TagEntity.name) private tagRepo: Model<TagEntity>) {}
 
   public async getAllTags(userId: string): Promise<Tag[]> {
-    const tag = await this.tagRepo.find({ userId });
+    const tag = await this.tagRepo.find({ userId }).sort('-createdAt');
 
     return tag.map((tag) => tag.toObject());
   }
@@ -18,5 +18,9 @@ export class TagRepoService {
     const tag = await this.tagRepo.create(data);
 
     return tag.toObject();
+  }
+
+  public async deleteTag({ userId, tagId }: { userId: string, tagId: string }): Promise<void> {
+    await this.tagRepo.deleteOne({ userId, _id: tagId });
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
@@ -37,5 +37,11 @@ export class TagController {
   @AuthRequired()
   public async getAllTags(@UserId() userId: string): Promise<Tag[]> {
     return this.tagRepo.getAllTags(userId);
+  }
+
+  @Delete(':id')
+  @AuthRequired()
+  public deleteTag(@UserId() userId: string, @Param('id') tagId: string): Promise<void> {
+    return this.tagRepo.deleteTag({ userId, tagId });
   }
 }
