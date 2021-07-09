@@ -10,7 +10,7 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: ['http://localhost:4500', 'https://https://recovqr.netlify.app']
+    origin: ['http://localhost:4500', 'https://recovqr.netlify.app']
   });
   app.use(helmet());
   app.use(rateLimit({
