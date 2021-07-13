@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { compare, hash } from 'bcryptjs';
+import { compare, hash } from 'bcrypt';
 import { AuthErrorMessages } from 'src/auth/constants/auth-error-messages.constant';
 
 @Injectable()
