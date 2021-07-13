@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JwtService } from '@nestjs/jwt';
 import { CreateUserRequest } from 'src/auth/dto/create-user-request.dto';
 import { LoginRequest } from 'src/auth/dto/login-request.dto';
 import { UserCreatedEvent } from 'src/auth/events/user-created.event';
 import { AuthResponse } from 'src/auth/interfaces/auth-response.interface';
 import { AuthRepoService } from 'src/auth/services/auth-repo/auth-repo.service';
-import { JwtService } from 'src/auth/services/jwt/jwt.service';
 import { PasswordService } from 'src/auth/services/password/password.service';
 
 @Controller('auth')
@@ -33,7 +33,11 @@ export class AuthController {
       new UserCreatedEvent(user)
     );
 
-    const jwt = this.jwtService.createJwt(user);
+    const jwt = await this.jwtService.signAsync({
+      id: user._id,
+      email: user.email,
+      name: user.name
+    });
 
     return { jwt, name: user.name, email: user.email };
   }
@@ -44,7 +48,11 @@ export class AuthController {
 
     await this.passwordService.checkPasswordsMatch(payload.password, user.password);
   
-    const jwt = this.jwtService.createJwt(user);
+    const jwt = await this.jwtService.signAsync({
+      id: user._id,
+      email: user.email,
+      name: user.name
+    });
   
     return { jwt, name: user.name, email: user.email };
   }

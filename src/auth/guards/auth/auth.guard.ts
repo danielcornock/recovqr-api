@@ -1,12 +1,12 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 import { IncomingMessage } from 'http';
 import { AuthErrorMessages } from 'src/auth/constants/auth-error-messages.constant';
 import { AuthMetadata } from 'src/auth/constants/auth-metadata.constant';
 import { User } from 'src/auth/entities/user.entity';
 import { DecodedJwt } from 'src/auth/interfaces/decoded-jwt.interface';
 import { AuthRepoService } from 'src/auth/services/auth-repo/auth-repo.service';
-import { JwtService } from 'src/auth/services/jwt/jwt.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
 
   private async getDecodedJwt(authorization: string): Promise<DecodedJwt> {
     try {
-      return await this.jwtService.decodeJwt(authorization);
+      return await this.jwtService.verifyAsync(authorization);
     } catch (e) {
       throw new UnauthorizedException(AuthErrorMessages.SessionExpired);
     }
