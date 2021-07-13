@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
+import { UserCreatedEvent } from 'src/auth/events/user-created.event';
 import { InformationPayload } from 'src/information/dto/information-payload.dto';
 import { Information } from 'src/information/entities/information.entity';
 import { QrCodeResponse } from 'src/information/interfaces/qr-code-response.interface';
@@ -39,5 +41,12 @@ export class InformationController {
   @Get(':userId')
   public async getPublicInformation(@Param('userId') userId: string): Promise<Information> {
     return this.infoRepo.fetchInformationByUserId(userId);
+  }
+
+  @OnEvent(UserCreatedEvent.name, { async: true })
+  public async createInformationEntryOnUserCreation(payload: UserCreatedEvent): Promise<void> {
+    const { email, name, _id: userId } = payload.data;
+  
+    await this.infoRepo.createInformationEntry(userId, { email, name });
   }
 }

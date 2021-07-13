@@ -34,4 +34,13 @@ export class InformationRepoService {
 
     return information.toObject();
   }
+
+  public async createInformationEntry(userId: string, data: InformationPayload): Promise<Information> {
+    const info = await this.infoRepo.create({
+      userId,
+      ...data
+    });
+
+    return info.toObject();
+  }
 }

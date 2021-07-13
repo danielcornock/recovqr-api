@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CreateUserRequest } from 'src/auth/dto/create-user-request.dto';
 import { LoginRequest } from 'src/auth/dto/login-request.dto';
+import { UserCreatedEvent } from 'src/auth/events/user-created.event';
 import { AuthResponse } from 'src/auth/interfaces/auth-response.interface';
 import { AuthRepoService } from 'src/auth/services/auth-repo/auth-repo.service';
 import { JwtService } from 'src/auth/services/jwt/jwt.service';
@@ -11,7 +13,8 @@ export class AuthController {
   constructor(
     private authRepoService: AuthRepoService,
     private passwordService: PasswordService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private eventEmitter: EventEmitter2
   ) {}
 
   @Post('register')
@@ -24,6 +27,11 @@ export class AuthController {
       password,
       name: payload.name
     });
+
+    this.eventEmitter.emit(
+      UserCreatedEvent.name,
+      new UserCreatedEvent(user)
+    );
 
     const jwt = this.jwtService.createJwt(user);
 

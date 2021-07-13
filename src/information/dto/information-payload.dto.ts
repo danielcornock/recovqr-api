@@ -2,17 +2,17 @@ import { IsString } from 'class-validator';
 
 export class InformationPayload {
   @IsString()
-  public name: string;
+  public name?: string;
 
   @IsString()
-  public email: string;
+  public email?: string;
 
   @IsString()
-  public country: string;
+  public country?: string;
 
   @IsString()
-  public telephone: string;
+  public telephone?: string;
 
   @IsString()
-  public message: string;
+  public message?: string;
 }

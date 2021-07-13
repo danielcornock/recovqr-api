@@ -1,5 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomValidationPipe } from './pipes/custom-validation/custom-validation.pipe';
 import { ConfigService } from './services/config/config.service';
@@ -12,6 +13,7 @@ import { ConfigService } from './services/config/config.service';
     }
   ],
   imports: [
+    EventEmitterModule.forRoot(),
     MongooseModule.forRootAsync({
       useFactory: () => {
         Logger.log(
