@@ -1,13 +1,15 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserRequest } from 'src/auth/dto/create-user-request.dto';
-import { LoginRequest } from 'src/auth/dto/login-request.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateUserPayload } from 'src/auth/dto/create-user-request.dto';
+import { LoginPayload } from 'src/auth/dto/login-request.dto';
 import { UserCreatedEvent } from 'src/auth/events/user-created.event';
 import { AuthResponse } from 'src/auth/interfaces/auth-response.interface';
 import { AuthRepoService } from 'src/auth/services/auth-repo/auth-repo.service';
 import { PasswordService } from 'src/auth/services/password/password.service';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -18,7 +20,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  public async register(@Body() payload: CreateUserRequest): Promise<AuthResponse> {
+  public async register(@Body() payload: CreateUserPayload): Promise<AuthResponse> {
     const email = payload.email.toLowerCase();
     const password = await this.passwordService.hashPassword(payload.password);
 
@@ -43,7 +45,7 @@ export class AuthController {
   }
 
   @Post('login')
-  public async login(@Body() payload: LoginRequest): Promise<AuthResponse> {
+  public async login(@Body() payload: LoginPayload): Promise<AuthResponse> {
     const user = await this.authRepoService.findUserForLogin(payload.email);
 
     await this.passwordService.checkPasswordsMatch(payload.password, user.password);

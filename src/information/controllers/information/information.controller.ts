@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
 import { UserCreatedEvent } from 'src/auth/events/user-created.event';
@@ -10,6 +11,7 @@ import { InformationRepoService } from 'src/information/services/information-rep
 import { QrCodeService } from 'src/information/services/qr-code/qr-code.service';
 
 @Controller('information')
+@ApiTags('Information')
 export class InformationController {
   constructor(
     private infoRepo: InformationRepoService,

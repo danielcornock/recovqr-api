@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthRequired } from 'src/auth/decorators/auth-required.decorator';
 import { UserId } from 'src/auth/decorators/user-id.decorator';
@@ -8,6 +9,7 @@ import { LocationLookupService } from 'src/tags/services/location-lookup/locatio
 import { TagRepoService } from 'src/tags/services/tag-repo/tag-repo.service';
 
 @Controller('tags')
+@ApiTags('Tags')
 export class TagController {
   constructor(
     private tagRepo: TagRepoService,

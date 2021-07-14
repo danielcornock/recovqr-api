@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthErrorMessages } from 'src/auth/constants/auth-error-messages.constant';
-import { CreateUserRequest } from 'src/auth/dto/create-user-request.dto';
+import { CreateUserPayload } from 'src/auth/dto/create-user-request.dto';
 import { User, UserEntity } from 'src/auth/entities/user.entity';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AuthRepoService {
     return user.toObject();
   }
 
-  public async createUser(payload: CreateUserRequest): Promise<Omit<User, 'password'>> {
+  public async createUser(payload: CreateUserPayload): Promise<Omit<User, 'password'>> {
     const existingUser = await this.userRepo.findOne({ email: payload.email });
     
     if (existingUser) {

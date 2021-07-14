@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as rateLimit from 'express-rate-limit';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
@@ -17,7 +18,16 @@ async function bootstrap(): Promise<void> {
     windowMs: 15 * 60 * 1000,
     max: 150
   }));
-  
+
+  const config = new DocumentBuilder()
+    .setTitle('Recovqr API')
+    .setDescription('API for Recovqr')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
+
   const port = ConfigService.getPort();
   await app.listen(port);
   Logger.log(`Server listening on port ${port}`, 'NestApplication');
