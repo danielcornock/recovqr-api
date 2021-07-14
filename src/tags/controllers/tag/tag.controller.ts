@@ -20,23 +20,16 @@ export class TagController {
       @Req() request: Request,
       @Body() body: CreateTagPayload
   ): Promise<Tag> {
-    const ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress;
-    // console.log(ipAddress);
-    console.log(request.headers['x-forwarded-for']);
-    console.log(request.connection.remoteAddress);
-    console.log(request.socket.address);
-    console.log(request.socket.remoteAddress);
-    console.log(request.ip);
-    console.log(ipAddress);
-    // console.log(request.socket.remoteAddress);
+    const ipAddress = request.headers['x-forwarded-for'] as string;
+
     const locationInformation = await this.locationLookupService.getLocationData(
-      ipAddress as string,
+      ipAddress,
       body
     );
 
     return this.tagRepo.generateTag({
       userId,
-      ipAddress: ipAddress as string,
+      ipAddress,
       ...locationInformation
     });
   }
