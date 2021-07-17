@@ -9,11 +9,12 @@ export class CustomValidationPipe extends ValidationPipe {
       exceptionFactory: (errors: ValidationError[]): BadRequestException => {
         /* Converts array of errors in to dictionary, keyed by the field name */
         const transformedErrors = errors.reduce((obj, error) => {
-          const message = Object.values(error.constraints)[0];
+          console.log(error.constraints);
+          const messages = Object.values(error.constraints);
     
-          const capitalisedMessage = message?.[0].toUpperCase() + message?.substring(1);
+          const capitalisedMessages = messages.map((message) => message[0].toUpperCase() + message?.substring(1));
     
-          obj[error.property] = capitalisedMessage;
+          obj[error.property] = capitalisedMessages.join('\n');
     
           return obj;
         }, {} as Record<string, string>);

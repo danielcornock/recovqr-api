@@ -19,6 +19,9 @@ export class InformationEntity extends Document {
   @Prop({ type: String })
   public message: string;
 
+  @Prop({ type: String })
+  public twitter: string;
+
   @Prop({ type: SchemaTypes.ObjectId, required: true, index: true })
   public userId: Types.ObjectId;
 }
