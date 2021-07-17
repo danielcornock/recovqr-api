@@ -35,9 +35,9 @@ export class InformationController {
   @Get('qr-code')
   @AuthRequired()
   public async getOwnQrCode(@Headers('origin') origin: string, @UserId() userId: string): Promise<QrCodeResponse> {
-    const qrCode = await this.qrCodeService.generateUserQrCode({ origin, userId });
+    const qrCodes = await this.qrCodeService.generateUserQrCodes({ origin, userId });
 
-    return { qrCode };
+    return { qrCodes };
   }
 
   @Get(':userId')

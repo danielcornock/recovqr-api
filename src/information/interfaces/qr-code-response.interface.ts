@@ -1,3 +1,3 @@
 export interface QrCodeResponse {
-  qrCode: string;
+  qrCodes: Array<string>;
 }
