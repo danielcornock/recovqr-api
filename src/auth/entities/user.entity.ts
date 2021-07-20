@@ -2,7 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, LeanDocument } from 'mongoose';
 import { Util } from 'src/core/services/util/util.service';
 
-@Schema()
+@Schema({
+  timestamps: true
+})
 export class UserEntity extends Document {
   @Prop({ type: String, required: true })
   public name: string;
