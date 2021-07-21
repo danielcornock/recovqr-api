@@ -46,7 +46,8 @@ export class AuthController {
 
   @Post('login')
   public async login(@Body() payload: LoginPayload): Promise<AuthResponse> {
-    const user = await this.authRepoService.findUserForLogin(payload.email);
+    const email = payload.email.toLowerCase();
+    const user = await this.authRepoService.findUserForLogin(email);
 
     await this.passwordService.checkPasswordsMatch(payload.password, user.password);
   
