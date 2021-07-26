@@ -1,0 +1,69 @@
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+orbs:
+  node: circleci/node@4.1
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - install-dependencies:
+          filters:
+            branches:
+              only:
+                - main
+      - build:
+          requires:
+            - install-dependencies
+          filters:
+            branches:
+              only:
+                - main
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
+
+jobs:
+  install-dependencies:
+    executor:
+      name: node/default
+      tag: '14'
+    steps:
+      - checkout
+      - node/install-packages
+      - persist_to_workspace:
+          root: /
+          paths:
+            - node_modules
+
+  build:
+    executor:
+      name: node/default
+      tag: '14'
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /
+      - run:
+          name: Build stuff
+          command: npm run build
+      - persist_to_workspace:
+          root: /
+          paths:
+            - dist
+
+  deploy:
+    executor:
+      name: node/default
+      tag: '14'
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /
+      - run:
+          name: Deploy
+          command: scp -r / "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
