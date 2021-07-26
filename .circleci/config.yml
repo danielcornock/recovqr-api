@@ -35,10 +35,6 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - node_modules
 
   build:
     working_directory: ~/project
