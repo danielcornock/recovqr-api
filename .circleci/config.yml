@@ -29,38 +29,41 @@ workflows:
 
 jobs:
   install-dependencies:
+    working_directory: ~/project
     executor:
       name: node/default
     steps:
       - checkout
       - node/install-packages
       - persist_to_workspace:
-          root: ~/
+          root: workspace
           paths:
             - node_modules
 
   build:
+    working_directory: ~/project
     executor:
       name: node/default
     steps:
       - checkout
       - attach_workspace:
-          at: ~/
+          at: workspace
       - run:
           name: Build stuff
           command: npm run build
       - persist_to_workspace:
-          root: ~/
+          root: workspace
           paths:
             - dist
 
   deploy:
+    working_directory: ~/project
     executor:
       name: node/default
     steps:
       - checkout
       - attach_workspace:
-          at: ~/
+          at: workspace
       - run:
           name: Deploy
           command: scp -r / "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
