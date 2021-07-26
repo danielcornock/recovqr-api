@@ -44,6 +44,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: workspace
+      - node/install-packages
       - run:
           name: Build stuff
           command: npm run build
