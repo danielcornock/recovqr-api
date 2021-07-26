@@ -35,7 +35,7 @@ jobs:
       - checkout
       - node/install-packages
       - persist_to_workspace:
-          root: /
+          root: ~/
           paths:
             - node_modules
 
@@ -45,12 +45,12 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: ~/
       - run:
           name: Build stuff
           command: npm run build
       - persist_to_workspace:
-          root: /
+          root: ~/
           paths:
             - dist
 
@@ -60,7 +60,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: ~/
       - run:
           name: Deploy
           command: scp -r / "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
