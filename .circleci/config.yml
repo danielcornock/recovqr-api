@@ -31,7 +31,6 @@ jobs:
   install-dependencies:
     executor:
       name: node/default
-      tag: '14'
     steps:
       - checkout
       - node/install-packages
@@ -43,7 +42,6 @@ jobs:
   build:
     executor:
       name: node/default
-      tag: '14'
     steps:
       - checkout
       - attach_workspace:
@@ -59,7 +57,6 @@ jobs:
   deploy:
     executor:
       name: node/default
-      tag: '14'
     steps:
       - checkout
       - attach_workspace:
