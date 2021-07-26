@@ -71,7 +71,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: workspace
+          at: ~/project
       - run:
           name: Log
           command: ls
