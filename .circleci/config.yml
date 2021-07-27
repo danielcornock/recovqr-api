@@ -76,5 +76,8 @@ jobs:
           name: Log
           command: ls
       - run:
+          name: Add to known hosts
+          command: sudo ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+      - run:
           name: Deploy
           command: scp -r / "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
