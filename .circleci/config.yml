@@ -83,4 +83,4 @@ jobs:
             - "$SSH_FINGERPRINT"
       - run:
           name: Deploy
-          command: scp -r / "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          command: scp -r ./ "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
