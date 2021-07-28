@@ -82,5 +82,15 @@ jobs:
           fingerprints:
             - "$SSH_FINGERPRINT"
       - run:
+          name: Upload
+          command: scp -r ~/project "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+      - run:
           name: Deploy
-          command: scp -r ./ "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          command: |
+            ssh $SSH_USER@$SSH_HOST
+            pm2 stop recovqr-api
+            rm -r ~/recovqr-api
+            cp -R ~/$SSH_DEPLOY_PATH/* ~/recovqr-api/
+            rm -r ~/$SSH_DEPLOY_PATH
+            cp ~/config/recovqr.env ~/recovqr-api/config.env
+            pm2 start ~/recovqr-api/dist/main.js --name recovqr-api
