@@ -87,10 +87,4 @@ jobs:
       - run:
           name: Deploy
           command: |
-            ssh $SSH_USER@$SSH_HOST "
-            pm2 stop recovqr-api
-            rm -r ~/recovqr-api
-            cp -R ~/$SSH_DEPLOY_PATH/* ~/recovqr-api/
-            rm -r ~/$SSH_DEPLOY_PATH
-            cp ~/config/recovqr.env ~/recovqr-api/config.env
-            pm2 start ~/recovqr-api/dist/main.js --name recovqr-api"
+            ssh $SSH_USER@$SSH_HOST "sh ~/deploy-scripts/deploy-recovqr.sh"
