@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
+import * as path from 'path';
 
-config({ path: 'config.env' });
+config({ path: path.join(__dirname, '../../../../config.env') });
 
 export class ConfigService {
   public static getDatabaseUri(): string {
