@@ -4,6 +4,7 @@ config({ path: 'config.env' });
 
 export class ConfigService {
   public static getDatabaseUri(): string {
+    console.log(process.env.DATABASE_URI);
     return process.env.DATABASE_URI || '';
   }
 
